@@ -1,5 +1,5 @@
 import { LineChart } from "react-native-chart-kit";
-import { Dimensions, View } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 import Background from "../Background";
 import Header from "../Header";
 import { useSelector } from "react-redux";
@@ -12,22 +12,30 @@ const screenWidth = Dimensions.get("window").width;
 export default function Tab() {
   const storeData = useSelector((state) => state);
   const userData = storeData.userData.data;
-  const profileData = storeData.profile.data;
-  const [lineChart, setLineChart] = useState({ label: [], data: [] });
+  const profile = storeData.profile.data;
+  const [lineChart, setLineChart] = useState({
+    label: [],
+    data: [],
+    loading: false,
+  });
+  const [profileData, setProfileData] = useState(null);
+  const [totalInvestments, setTotalInvestments] = useState({});
 
   useEffect(() => {
     getLineGraphData();
+    getProfileData();
+    getTotalInvestments();
   }, []);
   const data = {
     labels: lineChart.label,
     datasets: [
       {
         data: lineChart.data,
-        color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+        color: (opacity = 1) => `#09C729`, // optional
         strokeWidth: 2, // optional
       },
     ],
-    legend: ["Average savings per month"], // optional
+    legend: ["Average balance per month"], // optional
   };
 
   const getLineGraphData = () => {
@@ -43,6 +51,7 @@ export default function Tab() {
         const data = {
           label: response.data.data.month,
           data: response.data.data.eod_balance_values,
+          loading: true,
         };
         setLineChart(data);
       })
@@ -51,23 +60,62 @@ export default function Tab() {
       });
   };
 
+  const getProfileData = () => {
+    const payload = {
+      tracking_id: userData.tracking_id,
+      reference_id: userData.refrence_id,
+    };
+
+    axios
+      .post("/profile", payload)
+      .then((response) => {
+        const data = response.data.data;
+        console.log(response.data.data, "asddd");
+        setProfileData(data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const getTotalInvestments = () => {
+    const payload = {
+      tracking_id: userData.tracking_id,
+      reference_id: userData.refrence_id,
+    };
+
+    axios
+      .post("/currentinvestment", payload)
+      .then((response) => {
+        const data = response.data;
+        console.log(response.data, "investmensts");
+        setTotalInvestments(data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
     <Background>
-      <View>
-        <Text>Hi, {profileData?.name}</Text>
-        <Text>Hi, {profileData?.name}</Text>
+      <Text style={styles.underline}>asdadasdadasdasasdasdasdasdasda</Text>
+      <View style={styles.header}>
+        <Text style={styles.greetings}>Hi, {profileData?.data[0].name}</Text>
+        <Text>Account Balance: ₹{profileData?.balance}</Text>
+        <Text>Account No: {profileData?.bank_account}</Text>
       </View>
-      <Header>Wealth Management</Header>
-      {lineChart !== { label: [], data: [] } && (
+      <Text style={styles.underline}>asdadasdadasdasasdasdasdasdasda</Text>
+      <Header style={styles.subtitle}>Wealth Management</Header>
+      {lineChart?.loading && (
         <View style={{ display: "flex", alignItems: "center" }}>
           <LineChart
             data={data}
             width={screenWidth}
             height={220}
             chartConfig={{
-              backgroundColor: "#000000",
-              backgroundGradientFrom: "#000000",
-              backgroundGradientTo: "#000000",
+              backgroundColor: "#121212",
+              backgroundGradientFrom: "#121212",
+              backgroundGradientTo: "#121212",
               decimalPlaces: 0, // optional, defaults to 2dp
               color: (opacity = 1) => `rgba( 255, 255, 255, ${opacity})`,
               labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -77,7 +125,7 @@ export default function Tab() {
               propsForDots: {
                 r: "6",
                 strokeWidth: "2",
-                stroke: "#ffa726",
+                stroke: "#ffffff",
               },
             }}
           />
@@ -85,14 +133,85 @@ export default function Tab() {
         </View>
       )}
 
-      <Investments
-        investments={{
-          mutual_fund: 1232,
-          crypto: 1231231,
-          Stocks: 123123,
-          Commodities: 123123,
-        }}
-      />
+      <Investments investments={totalInvestments} />
     </Background>
   );
 }
+
+const styles = StyleSheet.create({
+  viewContainer: {
+    width: "100%",
+    display: "flex",
+    // alignSelf: "center",
+    // alignItems: "center",
+  },
+  container: {
+    width: "100%",
+    display: "flex",
+    alignSelf: "center",
+    alignItems: "center",
+  },
+  textCard: {
+    width: "100%",
+    marginVertical: 6,
+    paddingVertical: 2,
+    margin: 10,
+  },
+  headTitle: {
+    margin: 15,
+    fontSize: 22,
+    marginVertical: 6,
+    paddingVertical: 2,
+  },
+  title: {
+    fontSize: 16,
+    marginVertical: 4,
+    paddingVertical: 2,
+  },
+  text: {
+    fontSize: 16,
+    marginVertical: 3,
+    paddingVertical: 2,
+    textTransform: "capitalize",
+    color: "#cecece",
+  },
+  underline: {
+    height: 2,
+    width: "100%",
+    backgroundColor: "#cecece",
+  },
+  header: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    width: "140%",
+    marginVertical: 8,
+    paddingVertical: 10,
+  },
+  buttonContainer: {
+    margin: 20,
+    width: "100%",
+  },
+  greetings: {
+    fontSize: 22,
+    fontWeight: "600",
+    padding: 5,
+  },
+  accountContainer: {
+    fontSize: 18,
+    fontWeight: "600",
+    // position: "absolute",
+    // top: 10,
+    // left: 0,
+  },
+  underline: {
+    marginTop: 6,
+    height: 1,
+    backgroundColor: "#cecece",
+  },
+  subtitle: {
+    paddingVertical: 10,
+    fontSize: 20,
+    fontWeight: "400",
+  },
+});

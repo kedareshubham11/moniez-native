@@ -42,7 +42,6 @@ export default function Tab({ navigation }) {
       .post("/profile", payload)
       .then((response) => {
         const data = response.data.data.data[0];
-        console.log(data, "abc");
         setProfileData(data);
       })
       .catch(function (error) {

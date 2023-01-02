@@ -1,7 +1,8 @@
 import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 import { theme } from "../../core/theme";
-export default function Card({ item }) {
+import Button from "../Button";
+export default function Card({ item, pKey }) {
   const formatKey = (key) => {
     if (key.includes("one_year")) {
       return removeUnderScore(key.replace("one_year", "1Y"));
@@ -26,9 +27,9 @@ export default function Card({ item }) {
 
       <View style={styles.descContainer}>
         {Object.entries(item).map(([key, value], index) => {
-          if (key !== "name") {
+          if (key !== "name" && key !== "risk") {
             return (
-              <View style={styles.descItem} key={value}>
+              <View style={styles.descItem} key={`${pKey}${index}`}>
                 <Text styles={styles.text}>{formatKey(key)}</Text>
                 <Text styles={styles.text}>{value}</Text>
               </View>
@@ -37,6 +38,9 @@ export default function Card({ item }) {
             return <></>;
           }
         })}
+        <Button mode="outlined" onPress={() => alert("Invest Now")}>
+          Invest
+        </Button>
       </View>
     </View>
   );
@@ -44,12 +48,12 @@ export default function Card({ item }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#1B1A1A",
+    backgroundColor: "#1B1B1B",
     display: "flex",
     margin: 5,
     padding: 5,
     borderRadius: 7,
-    width: "90%",
+    width: 250,
   },
   title: {
     fontSize: 16,

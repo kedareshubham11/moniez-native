@@ -9,18 +9,23 @@ import axios from "../../helpers/axios/axios";
 const screenWidth = Dimensions.get("window").width;
 
 const colors = [
-  "#011B08",
-  "#034A17",
-  "#057324",
-  "#0CAC39",
-  "#12D449",
-  "#14FC55",
+  "#008631",
+  "#00ab41",
+  "#00c04b",
+  "#1fd655",
+  "#39e75f",
+  "#5ced73",
 ];
 
 export default function Tab() {
   const userData = useSelector((state) => state.userData.data);
-  const [lineChart, setLineChart] = useState({ label: [], data: [] });
+  const [lineChart, setLineChart] = useState({
+    label: [],
+    data: [],
+    loading: false,
+  });
   const [pieChart, setPieChart] = useState([]);
+  const [loadingPieChart, setLoadingPieChart] = useState(false);
 
   useEffect(() => {
     getLineGraphData();
@@ -31,7 +36,7 @@ export default function Tab() {
     datasets: [
       {
         data: lineChart.data,
-        color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+        color: (opacity = 1) => `#09C729`, // optional
         strokeWidth: 2, // optional
       },
     ],
@@ -63,6 +68,7 @@ export default function Tab() {
         const data = {
           label: response.data.data.month,
           data: response.data.data.avg_debit_amount,
+          loading: true,
         };
         setLineChart(data);
       })
@@ -83,6 +89,7 @@ export default function Tab() {
         console.log(JSON.stringify(response.data));
         const data = mapPieChartData(response.data);
         setPieChart(data);
+        setLoadingPieChart(true);
       })
       .catch(function (error) {
         console.log(error);
@@ -91,16 +98,16 @@ export default function Tab() {
   return (
     <Background>
       <Header>Analytics</Header>
-      {lineChart !== { label: [], data: [] } && (
+      {lineChart?.loading && (
         <View style={{ display: "flex", alignItems: "center" }}>
           <LineChart
             data={data}
             width={screenWidth}
             height={220}
             chartConfig={{
-              backgroundColor: "#000000",
-              backgroundGradientFrom: "#000000",
-              backgroundGradientTo: "#000000",
+              backgroundColor: "#121212",
+              backgroundGradientFrom: "#121212",
+              backgroundGradientTo: "#121212",
               decimalPlaces: 2, // optional, defaults to 2dp
               color: (opacity = 1) => `rgba(  255, 255, 255, ${opacity})`,
               labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -110,15 +117,17 @@ export default function Tab() {
               propsForDots: {
                 r: "6",
                 strokeWidth: "2",
-                stroke: "#ffa726",
+                stroke: "#ffffff",
               },
             }}
           />
-          <Header>Monthly Spends</Header>
+          <Header style={{ colors: "#555555", fontSize: 18 }}>
+            Monthly Spends
+          </Header>
         </View>
       )}
 
-      {pieChart !== [] && (
+      {loadingPieChart && (
         <View style={{ marginTop: 20, display: "flex", alignItems: "center" }}>
           <PieChart
             data={pieChart}
@@ -144,7 +153,9 @@ export default function Tab() {
             absolute //for the absolut
           />
 
-          <Header>Category Wise Analysis</Header>
+          <Header style={{ colors: "#555555", fontSize: 18 }}>
+            Category Wise Analysis
+          </Header>
         </View>
       )}
     </Background>

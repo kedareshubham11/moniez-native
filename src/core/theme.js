@@ -4,10 +4,10 @@ export const theme = {
   ...DarkTheme,
   colors: {
     ...DarkTheme.colors,
-    surface: "#000000",
+    surface: "#121212",
     text: "#ffffff",
     primary: "#ffffff",
-    secondary: "#ffffff",
+    secondary: "#02BB92",
     error: "#f13a59",
   },
 };

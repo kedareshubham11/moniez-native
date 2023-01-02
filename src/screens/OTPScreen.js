@@ -36,7 +36,7 @@ export default function OTPScreen({ navigation }) {
 
   return (
     <Background>
-      <BackButton goBack={navigation.goBack} />
+      {/* <BackButton goBack={navigation.goBack} /> */}
       <Logo />
       <Header>Welcome</Header>
 

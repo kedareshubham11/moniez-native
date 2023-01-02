@@ -29,7 +29,7 @@ export default function App() {
                 // headerShown: true,
                 title: "Moniez",
                 headerStyle: {
-                  backgroundColor: "#09C729",
+                  backgroundColor: "#02BB92",
                 },
                 headerTintColor: "#fff",
                 headerTitleStyle: {

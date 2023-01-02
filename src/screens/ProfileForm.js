@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateProfile } from "../store/actions/profile";
 import { emailValidator } from "../helpers/validators/emailValidator";
 import { nameValidator } from "../helpers/validators/nameValidator";
+import { theme } from "../core/theme";
 
 export default function ProfileForm({ navigation }) {
   const dispatch = useDispatch();
@@ -144,13 +145,13 @@ const styles = StyleSheet.create({
   containerStyle: {
     width: "100%",
     flex: 1,
-    backgroundColor: "#000",
+    backgroundColor: theme.colors.surface,
   },
   safeContainerStyle: {
     height: 20,
     width: "100%",
     flex: 1,
-    backgroundColor: "#000",
+    backgroundColor: theme.colors.surface,
     justifyContent: "flex-start",
   },
 });

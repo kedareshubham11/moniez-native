@@ -6,12 +6,15 @@ import Card from "../Card";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "../../helpers/axios/axios";
+import Title from "../Title";
 export default function Tab() {
-  const userData = useSelector((state) => state.userData.data);
+  const storeData = useSelector((state) => state);
+  const userData = storeData.userData.data;
+  const riskAppetite = storeData.profile.data.riskAppetite;
   const [recommendations, setRecommendations] = useState([]);
 
   useEffect(() => {
-    // getRecomendation();
+    getRecomendation();
   }, []);
   const stocks = {
     mutual_funds: [
@@ -107,13 +110,12 @@ export default function Tab() {
     const payload = {
       tracking_id: userData.tracking_id,
       reference_id: userData.refrence_id,
-      risk_appetite_value: 0.33,
+      risk_appetite_value: riskAppetite,
     };
 
     axios
       .post("/recommendations", payload)
       .then((response) => {
-        console.log(JSON.stringify(response.data.data));
         const data = response.data.data;
         setRecommendations(data);
       })
@@ -128,18 +130,20 @@ export default function Tab() {
         <View style={styles.container}>
           <Header>All</Header>
           <View>
-            {/* {mutual_funds.map((item) => (
-              <Card item={item} />
-            ))} */}
-
-            {stocks &&
-              Object.entries(stocks).map(([key, value], index) => {
+            {stocks.length != 0 &&
+              Object.entries(stocks).map(([key, value], pIndex) => {
                 return (
                   <>
-                    <Header>{key}</Header>
-                    {value.map((item) => (
-                      <Card item={item} key={value} />
-                    ))}
+                    <Title>{key}</Title>
+                    <ScrollView horizontal={true}>
+                      {value.map((item, index) => (
+                        <Card
+                          item={item}
+                          key={`${key}${pIndex}${index}`}
+                          pKey={`${key}${pIndex}${index}`}
+                        />
+                      ))}
+                    </ScrollView>
                   </>
                 );
               })}
@@ -152,10 +156,10 @@ export default function Tab() {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
+    width: 400,
     display: "flex",
     // alignSelf: "left",
-    // alignItems: "left",
+    alignItems: "center",
     // justifyContent: "flex-start",
   },
 });

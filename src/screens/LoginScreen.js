@@ -29,7 +29,7 @@ export default function LoginScreen({ navigation }) {
   return (
     <Background>
       <Logo />
-      <Header>Moniez</Header>
+      <Header>MONIEZ</Header>
       <TextInput
         label="Phone No"
         returnKeyType="next"

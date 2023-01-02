@@ -11,18 +11,19 @@ import { Tab1, Tab2, Tab4, Tab3, Tab5 } from "../components/Tabs";
 export default function Dashboard({ navigation }) {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: "analytics", title: "Analytics", icon: "database" },
+    {
+      key: "home",
+      title: "Home",
+      icon: "home",
+    },
+    { key: "analytics", title: "Analytics", icon: "google-analytics" },
     {
       key: "category",
-      title: "Category",
-      icon: "tab",
+      title: "Moniez",
+      icon: "ballot-recount",
     },
-    { key: "all", title: "View All", icon: "history" },
-    {
-      key: "abc",
-      title: "Wealth Management",
-      icon: "tab",
-    },
+    { key: "all", title: "View All", icon: "hand-coin" },
+
     {
       key: "profile",
       title: "Profile",
@@ -35,10 +36,10 @@ export default function Dashboard({ navigation }) {
   };
 
   const renderScene = BottomNavigation.SceneMap({
+    home: Tab5,
     category: Tab2,
     analytics: Tab1,
     all: Tab3,
-    abc: Tab5,
     profile: ProfileTab,
   });
 

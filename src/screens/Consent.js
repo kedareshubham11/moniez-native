@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import Button from "../components/Button";
 // import BackButton from "../components/BackButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Linking, View } from "react-native";
+import { Image, Linking, View } from "react-native";
 // import BeautyWebView from "react-native-beauty-webview";
 import { useSelector, useDispatch } from "react-redux";
 import { updateAAData } from "../store/actions/aa";
@@ -55,9 +55,10 @@ export default function ProfileForm({ navigation }) {
 
   return (
     <Background>
+      <Image source={require("../assets/3d-casual-life.png")} />
       {/* <BackButton goBack={navigation.goBack} /> */}
       {/* <Header>Moniez</Header> */}
-      <Logo />
+
       <View style={{ display: "flex", alignItems: "center", marginTop: 30 }}>
         <MaterialCommunityIcons
           name="transit-connection-variant"

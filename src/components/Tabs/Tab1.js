@@ -3,9 +3,9 @@ import { LineChart, PieChart } from "react-native-chart-kit";
 import { Dimensions, View } from "react-native";
 import Background from "../Background";
 import Header from "../Header";
-import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
+import axios from "../../helpers/axios/axios";
 const screenWidth = Dimensions.get("window").width;
 
 const colors = [
@@ -49,46 +49,15 @@ export default function Tab() {
       };
     });
   };
-  const pieChartData = [
-    {
-      name: "Seoul",
-      population: 21500000,
-      color: "rgba(131, 167, 234, 1)",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "Toronto",
-      population: 2800000,
-      color: "#F00",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "Beijing",
-      population: 527612,
-      color: "red",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-  ];
 
   const getLineGraphData = () => {
-    const data = JSON.stringify({
+    const payload = {
       tracking_id: userData.tracking_id,
       reference_id: userData.refrence_id,
-    });
-
-    const config = {
-      method: "post",
-      url: "http://127.0.0.1:8000/debitavg",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
     };
 
-    axios(config)
+    axios
+      .post("/debitavg", payload)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
         const data = {
@@ -103,21 +72,13 @@ export default function Tab() {
   };
 
   const getPieChartData = () => {
-    const data = JSON.stringify({
+    const payload = {
       tracking_id: userData.tracking_id,
       reference_id: userData.refrence_id,
-    });
-
-    const config = {
-      method: "post",
-      url: "http://127.0.0.1:8000/categorywise",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
     };
 
-    axios(config)
+    axios
+      .post("/categorywise", payload)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
         const data = mapPieChartData(response.data);

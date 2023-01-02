@@ -3,41 +3,34 @@ import Background from "../components/Background";
 import Logo from "../components/Logo";
 import Header from "../components/Header";
 import Button from "../components/Button";
-import BackButton from "../components/BackButton";
+// import BackButton from "../components/BackButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Linking, View } from "react-native";
 import axios from "axios";
-import BeautyWebView from "react-native-beauty-webview";
+// import BeautyWebView from "react-native-beauty-webview";
 import { useSelector, useDispatch } from "react-redux";
 import { updateAAData } from "../store/actions/aa";
+import axios from "../helpers/axios/axios";
 
 export default function ProfileForm({ navigation }) {
+  console.log(baseUrl, "base");
   const dispatch = useDispatch();
   const phoneNo = useSelector((state) => state.user.username);
   console.log(phoneNo, "u");
-  const [visible, setVisible] = useState(false);
+  // const [visible, setVisible] = useState(false);
   // const [consentUrl, setConsentUrl] = useState("https://www.google.com");
   const onSubmit = () => {
-    const data = JSON.stringify({
+    const payload = {
       phonenumber: phoneNo,
-    });
-
-    const config = {
-      method: "post",
-      url: "http://127.0.0.1:8000/initiate-consent",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
     };
 
-    axios(config)
+    axios
+      .post("/initiate-consent", payload)
       .then(function (response) {
         console.log(response.data);
         dispatch(updateAAData(response.data));
         // setConsentUrl(response.data.redirection_url);
         // setVisible(true);
-        console.log(response.data.redirection_url);
         openUrlInBrowser(response.data.redirection_url);
         navigation.reset({
           index: 0,

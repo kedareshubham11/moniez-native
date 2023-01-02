@@ -5,10 +5,10 @@ import Header from "../Header";
 import Card from "../Card";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
+import axios from "../../helpers/axios/axios";
 export default function Tab() {
   const userData = useSelector((state) => state.userData.data);
-  const [recommendations, setRecommendations] = useState("");
+  const [recommendations, setRecommendations] = useState([]);
 
   useEffect(() => {
     // getRecomendation();
@@ -104,23 +104,15 @@ export default function Tab() {
   };
 
   const getRecomendation = () => {
-    const data = JSON.stringify({
+    const payload = {
       tracking_id: userData.tracking_id,
       reference_id: userData.refrence_id,
       risk_appetite_value: 0.33,
-    });
-
-    const config = {
-      method: "post",
-      url: "http://127.0.0.1:8000/recommendations",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
     };
 
-    axios(config)
-      .then(function (response) {
+    axios
+      .post("/recommendations", payload)
+      .then((response) => {
         console.log(JSON.stringify(response.data.data));
         const data = response.data.data;
         setRecommendations(data);

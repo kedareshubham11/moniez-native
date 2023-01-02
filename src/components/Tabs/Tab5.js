@@ -1,11 +1,11 @@
-import { Text } from "react-native-paper";
-import { LineChart, PieChart } from "react-native-chart-kit";
+import { LineChart } from "react-native-chart-kit";
 import { Dimensions, View } from "react-native";
 import Background from "../Background";
 import Header from "../Header";
 import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import axios from "../../helpers/axios/axios";
 const screenWidth = Dimensions.get("window").width;
 
 export default function Tab() {
@@ -28,23 +28,15 @@ export default function Tab() {
   };
 
   const getLineGraphData = () => {
-    const data = JSON.stringify({
+    const payload = {
       tracking_id: userData.tracking_id,
       reference_id: userData.refrence_id,
-    });
-
-    const config = {
-      method: "post",
-      url: "http://127.0.0.1:8000/eodmonthbalance",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
     };
 
-    axios(config)
+    axios
+      .post("/eodmonthbalance", payload)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        console.log(response.data);
         const data = {
           label: response.data.data.month,
           data: response.data.data.eod_balance_values,

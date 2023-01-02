@@ -12,7 +12,6 @@ import { Tab1, Tab2, Tab4, Tab3, Tab5 } from "../components/Tabs";
 
 export default function Dashboard({ navigation }) {
   const [index, setIndex] = React.useState(0);
-
   const [routes] = React.useState([
     {
       key: "category",

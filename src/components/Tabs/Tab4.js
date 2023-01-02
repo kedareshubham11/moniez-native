@@ -25,7 +25,6 @@ export default function Tab({ navigation }) {
 
   return (
     <Background styles={styles.container}>
-      {/* <ScrollView> */}
       <View style={styles.container}>
         <View style={styles.header}>
           <FontAwesome name="user-circle" size={24} color="white" />
@@ -57,7 +56,6 @@ export default function Tab({ navigation }) {
           </Button>
         </View>
       </View>
-      {/* </ScrollView> */}
     </Background>
   );
 }
@@ -68,7 +66,6 @@ const styles = StyleSheet.create({
     display: "flex",
     alignSelf: "center",
     alignItems: "center",
-    // justifyContent: "flex-start",
   },
   textCard: {
     width: "100%",

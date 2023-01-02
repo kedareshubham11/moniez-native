@@ -114,7 +114,7 @@ export default function Tab() {
               },
             }}
           />
-          <Header>Line Chart</Header>
+          <Header>Monthly Spends</Header>
         </View>
       )}
 

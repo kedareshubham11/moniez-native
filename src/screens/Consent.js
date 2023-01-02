@@ -6,14 +6,12 @@ import Button from "../components/Button";
 // import BackButton from "../components/BackButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Linking, View } from "react-native";
-import axios from "axios";
 // import BeautyWebView from "react-native-beauty-webview";
 import { useSelector, useDispatch } from "react-redux";
 import { updateAAData } from "../store/actions/aa";
 import axios from "../helpers/axios/axios";
 
 export default function ProfileForm({ navigation }) {
-  console.log(baseUrl, "base");
   const dispatch = useDispatch();
   const phoneNo = useSelector((state) => state.user.username);
   console.log(phoneNo, "u");

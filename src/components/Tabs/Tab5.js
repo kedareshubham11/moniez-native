@@ -2,7 +2,6 @@ import { LineChart } from "react-native-chart-kit";
 import { Dimensions, View } from "react-native";
 import Background from "../Background";
 import Header from "../Header";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from "../../helpers/axios/axios";

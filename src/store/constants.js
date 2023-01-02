@@ -1,0 +1,3 @@
+export const UPDATE_USERNAME = "UPDATE_USERNAME";
+export const UPDATE_AA_DATA = "UPDATE_AA_DATA";
+export const UPDATE_PROFILE = "UPDATE_PROFILE";

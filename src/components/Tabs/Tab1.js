@@ -144,7 +144,7 @@ export default function Tab() {
             absolute //for the absolut
           />
 
-          <Header>Pie Chart</Header>
+          <Header>Category Wise Analysis</Header>
         </View>
       )}
     </Background>

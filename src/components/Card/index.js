@@ -1,7 +1,5 @@
-import { Dimensions, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
-import Header from "../Header";
-import Paragraph from "../Paragraph";
 import { theme } from "../../core/theme";
 export default function Card({ item }) {
   const formatKey = (key) => {
@@ -10,15 +8,16 @@ export default function Card({ item }) {
     } else if (key.includes("three_year")) {
       return removeUnderScore(key.replace("three_year", "3Y"));
     } else if (key.includes("five_year")) {
-      return removeUnderScore(key.replace("five_year", "5y"));
+      return removeUnderScore(key.replace("five_year", "5Y"));
     } else {
       return removeUnderScore(key);
     }
   };
 
-  const removeUnderScore = (string) => {
-    return string.replaceAll("_", " ");
+  const removeUnderScore = (name) => {
+    return name ? name.replaceAll("_", " ") : "";
   };
+
   return (
     <View style={styles.container}>
       <View>

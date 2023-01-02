@@ -4,25 +4,23 @@ import Logo from "../components/Logo";
 import Header from "../components/Header";
 import Paragraph from "../components/Paragraph";
 import Button from "../components/Button";
-import { saveToLocal } from "../helpers/secureStore/index";
 import { BottomNavigation, Text } from "react-native-paper";
-import { AntDesign } from "@expo/vector-icons";
 import { theme } from "../core/theme";
 import { Tab1, Tab2, Tab4, Tab3, Tab5 } from "../components/Tabs";
 
 export default function Dashboard({ navigation }) {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
+    { key: "analytics", title: "Analytics", icon: "database" },
     {
       key: "category",
       title: "Category",
       icon: "tab",
     },
-    { key: "analytics", title: "Analytics", icon: "database" },
     { key: "all", title: "View All", icon: "history" },
     {
       key: "abc",
-      title: "Abc",
+      title: "Wealth Management",
       icon: "tab",
     },
     {

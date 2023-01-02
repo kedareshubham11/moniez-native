@@ -126,7 +126,7 @@ export default function Tab() {
     <ScrollView>
       <Background>
         <View style={styles.container}>
-          <Header>Recommendations</Header>
+          <Header>Recommendations for investers like you.</Header>
           <View>
             {/* {mutual_funds.map((item) => (
               <Card item={item} />
@@ -138,7 +138,7 @@ export default function Tab() {
                   <>
                     <Header>{key}</Header>
                     {value.map((item) => (
-                      <Card item={item} key={value} />
+                      <Card item={item} key={`${key}${value}${index}`} />
                     ))}
                   </>
                 );

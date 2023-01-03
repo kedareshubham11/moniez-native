@@ -38,7 +38,6 @@ export default function OTPScreen({ navigation }) {
     <Background>
       {/* <BackButton goBack={navigation.goBack} /> */}
       <Logo />
-      <Header>Welcome</Header>
 
       <TextInput
         label="OTP"

@@ -4,7 +4,7 @@ import { theme } from "../../core/theme";
 import Button from "../Button";
 import { formatKey } from "../../helpers/formators";
 
-export default function Card({ item, pKey, openModal }) {
+export default function RowCard({ item, pKey, openModal }) {
   return (
     <View style={styles.container}>
       <View>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     margin: 5,
     padding: 10,
     borderRadius: 7,
-    width: 250,
+    width: "100%",
     justifyContent: "space-evenly",
   },
   title: {

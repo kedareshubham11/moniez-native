@@ -22,7 +22,7 @@ export default function Tab() {
   const [lineChart, setLineChart] = useState({
     label: [],
     data: [],
-    loading: false,
+    loader: true,
   });
   const [pieChart, setPieChart] = useState([]);
   const [loadingPieChart, setLoadingPieChart] = useState(false);
@@ -67,7 +67,7 @@ export default function Tab() {
         const data = {
           label: response.data.data.month,
           data: response.data.data.avg_debit_amount,
-          loading: true,
+          loader: false,
         };
         setLineChart(data);
       })
@@ -96,7 +96,7 @@ export default function Tab() {
   return (
     <Background>
       <Header>Analytics</Header>
-      {lineChart?.loading && (
+      {!lineChart?.loader && (
         <View style={{ display: "flex", alignItems: "center", marginTop: 30 }}>
           <Header style={{ colors: "#555555", fontSize: 18 }}>
             Monthly Spends

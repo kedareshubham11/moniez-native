@@ -99,7 +99,10 @@ export default function Tab() {
     <Background>
       <Header>Analytics</Header>
       {lineChart?.loading && (
-        <View style={{ display: "flex", alignItems: "center" }}>
+        <View style={{ display: "flex", alignItems: "center", marginTop: 30 }}>
+          <Header style={{ colors: "#555555", fontSize: 18 }}>
+            Monthly Spends
+          </Header>
           <LineChart
             data={data}
             width={screenWidth}
@@ -121,14 +124,14 @@ export default function Tab() {
               },
             }}
           />
-          <Header style={{ colors: "#555555", fontSize: 18 }}>
-            Monthly Spends
-          </Header>
         </View>
       )}
 
       {loadingPieChart && (
         <View style={{ marginTop: 20, display: "flex", alignItems: "center" }}>
+          <Header style={{ colors: "#555555", fontSize: 18 }}>
+            Category Wise Analysis
+          </Header>
           <PieChart
             data={pieChart}
             width={Dimensions.get("window").width - 16}
@@ -152,10 +155,6 @@ export default function Tab() {
             paddingLeft="15"
             absolute //for the absolut
           />
-
-          <Header style={{ colors: "#555555", fontSize: 18 }}>
-            Category Wise Analysis
-          </Header>
         </View>
       )}
     </Background>

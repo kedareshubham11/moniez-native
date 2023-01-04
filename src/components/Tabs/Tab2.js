@@ -42,14 +42,6 @@ export default function Tab() {
         risk: "high",
         category: "equity",
       },
-      {
-        name: "Kotak small cap fund direct growth",
-        one_year_return: "0.55%",
-        three_year_return: "32.59%",
-        five_year_return: "15.63%",
-        risk: "high",
-        category: "equity",
-      },
     ],
     stocks: [
       {
@@ -76,34 +68,32 @@ export default function Tab() {
         one_year: "-53.21%",
         five_year: "190.15%",
       },
-      {
-        name: "Meta Platform Inc",
-        current_price: "$120.67",
-        one_month: "5.63%",
-        three_months: "-15.24%",
-        one_year: "-66.29%",
-        five_year: "-34.48%",
-      },
-      {
-        name: "Cisco System Inc",
-        current_price: "$47.61",
-        one_month: "-2.51%",
-        three_months: "16.02%",
-        one_year: "-26.41%",
-        five_year: "22.9%",
-      },
     ],
     crypto: [
       { name: "Bitcoin", price: "1439600", category: "large_cap" },
       { name: "Ethereum", price: "102831", category: "large_cap" },
       { name: "Binance coin", price: "21305", category: "large_cap" },
-      { name: "Solana", price: "800.26", category: "large_cap" },
-      { name: "Tether", price: "87.15", category: "large_cap" },
-      { name: "Ripple", price: "30.3", category: "large_cap" },
-      { name: "Cardano", price: "21.25", category: "large_cap" },
-      { name: "Doge", price: "6.25", category: "large_cap" },
     ],
-    bonds: [{}],
+    bonds: [
+      {
+        name: "UTI Bond Fund Direct Growth",
+        one_year_return: "10.28%",
+        three_year_return: "7.19%",
+        five_year_return: "-4.17%",
+      },
+      {
+        name: "Nippon India Income Fund (Growth)",
+        one_year_return: "-3.33%",
+        three_year_return: "4.96%",
+        five_year_return: "6.46%",
+      },
+      {
+        name: "ICICI Prudential Long Term Bond Fund Direct Plan Growth",
+        one_year_return: "-1.86%",
+        three_year_return: "4.71%",
+        five_year_return: "6.82%",
+      },
+    ],
   };
 
   const getRecomendation = () => {
@@ -128,8 +118,8 @@ export default function Tab() {
     <ScrollView>
       <Background>
         <View style={styles.container}>
-          <Header>Recommendations for you.</Header>
-          <View>
+          <Header>Recommendations For You</Header>
+          <View style={styles.recommendations}>
             {stocks.length != 0 &&
               Object.entries(stocks).map(([key, value], pIndex) => {
                 return (
@@ -156,10 +146,13 @@ export default function Tab() {
 
 const styles = StyleSheet.create({
   container: {
-    width: 400,
+    width: 350,
     display: "flex",
     // alignSelf: "left",
     alignItems: "center",
     // justifyContent: "flex-start",
+  },
+  recommendations: {
+    marginTop: 20,
   },
 });

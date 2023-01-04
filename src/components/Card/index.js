@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#1B1B1B",
     display: "flex",
     margin: 5,
-    padding: 5,
+    padding: 10,
     borderRadius: 7,
     width: 250,
   },

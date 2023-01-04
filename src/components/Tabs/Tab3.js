@@ -103,7 +103,38 @@ export default function Tab() {
       { name: "Cardano", price: "21.25", category: "large_cap" },
       { name: "Doge", price: "6.25", category: "large_cap" },
     ],
-    bonds: [{}],
+    bonds: [
+      {
+        name: "UTI Bond Fund Direct Growth",
+        one_year_return: "10.28%",
+        three_year_return: "7.19%",
+        five_year_return: "-4.17%",
+      },
+      {
+        name: "Nippon India Income Fund (Growth)",
+        one_year_return: "-3.33%",
+        three_year_return: "4.96%",
+        five_year_return: "6.46%",
+      },
+      {
+        name: "ICICI Prudential Long Term Bond Fund Direct Plan Growth",
+        one_year_return: "-1.86%",
+        three_year_return: "4.71%",
+        five_year_return: "6.82%",
+      },
+      {
+        name: "Tata Income Fund Direct Growth",
+        one_year_return: "-0.50%",
+        three_year_return: "5.97%",
+        five_year_return: "-5.89%",
+      },
+      {
+        name: "LIC MF Bond Fund Growth",
+        one_year_return: "-2.85%",
+        three_year_return: "4.26%",
+        five_year_return: "5.26%",
+      },
+    ],
   };
 
   const getRecomendation = () => {
@@ -128,7 +159,7 @@ export default function Tab() {
     <ScrollView>
       <Background>
         <View style={styles.container}>
-          <Header>All</Header>
+          <Header>Explore All Recommendations</Header>
           <View>
             {stocks.length != 0 &&
               Object.entries(stocks).map(([key, value], pIndex) => {
@@ -156,10 +187,10 @@ export default function Tab() {
 
 const styles = StyleSheet.create({
   container: {
-    width: 400,
+    width: 350,
     display: "flex",
     // alignSelf: "left",
     alignItems: "center",
-    // justifyContent: "flex-start",
+    // justifyContent: "flex-start"
   },
 });

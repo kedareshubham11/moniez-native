@@ -19,10 +19,10 @@ export default function Dashboard({ navigation }) {
     { key: "analytics", title: "Analytics", icon: "google-analytics" },
     {
       key: "category",
-      title: "Moniez",
+      title: "Personalized",
       icon: "ballot-recount",
     },
-    { key: "all", title: "View All", icon: "hand-coin" },
+    { key: "all", title: "Explore", icon: "hand-coin" },
 
     {
       key: "profile",

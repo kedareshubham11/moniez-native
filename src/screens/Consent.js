@@ -6,6 +6,8 @@ import Button from "../components/Button";
 // import BackButton from "../components/BackButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Image, Linking, View } from "react-native";
+import { Text } from "react-native-paper";
+
 // import BeautyWebView from "react-native-beauty-webview";
 import { useSelector, useDispatch } from "react-redux";
 import { updateAAData } from "../store/actions/aa";
@@ -55,21 +57,32 @@ export default function ProfileForm({ navigation }) {
 
   return (
     <Background>
-      <Image source={require("../assets/3d-casual-life.png")} />
+      {/* <View style={{ display: "flex", alignItems: "center", marginTop: 30 }}>
+        <Header style={{ alignItems: "center"}}>Consent to your financial data</Header>
+        <Text
+          style={{
+            fontSize: 20,
+            marginTop: 20,
+            marginBottom: 20,
+            fontWeight: "bold",
+          }}
+        ></Text>
+      </View> */}
+      <Image
+        source={require("../assets/3d-casual-life.png")}
+        style={{ marginBottom: 20 }}
+      />
       {/* <BackButton goBack={navigation.goBack} /> */}
       {/* <Header>Moniez</Header> */}
 
-      <View style={{ display: "flex", alignItems: "center", marginTop: 30 }}>
-        <MaterialCommunityIcons
-          name="transit-connection-variant"
-          size={40}
-          color="white"
-        />
-        <Header>Connect Account Aggrigator</Header>
-      </View>
-
       <Button mode="contained" onPress={onSubmit}>
-        CONNECT
+        {/* <MaterialCommunityIcons
+          name="transit-connection-variant"
+          size={20}
+          color="white"
+          style={{ marginRight: 20 }}
+        /> */}
+        Consent to financial data
       </Button>
       {/* {visible && (
         <BeautyWebView

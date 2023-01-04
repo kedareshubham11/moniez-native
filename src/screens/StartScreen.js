@@ -8,7 +8,10 @@ import { Image } from "react-native";
 export default function StartScreen({ navigation }) {
   return (
     <Background>
-      <Image source={require("../assets/credit-cards.png")} />
+      <Image
+        source={require("../assets/credit-cards.png")}
+        style={{ marginBottom: 20 }}
+      />
       <Button mode="contained" onPress={() => navigation.navigate("Dashboard")}>
         GET Started
       </Button>

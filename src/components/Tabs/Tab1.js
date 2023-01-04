@@ -1,58 +1,45 @@
-import { Text } from "react-native-paper";
-import { LineChart, PieChart } from "react-native-chart-kit";
-import { Dimensions, View } from "react-native";
+import { LineChart } from "react-native-chart-kit";
+import { Dimensions, StyleSheet, View } from "react-native";
 import Background from "../Background";
 import Header from "../Header";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from "../../helpers/axios/axios";
+import Investments from "../Investments";
+import { Text } from "react-native-paper";
+import Button from "../Button";
+import { useNavigation } from "@react-navigation/native";
 const screenWidth = Dimensions.get("window").width;
 
-const colors = [
-  "#008631",
-  "#00ab41",
-  "#00c04b",
-  "#1fd655",
-  "#39e75f",
-  "#5ced73",
-];
-
 export default function Tab() {
-  const userData = useSelector((state) => state.userData.data);
+  const storeData = useSelector((state) => state);
+  const userData = storeData.userData.data;
+  const profile = storeData.profile.data;
+  const navigation = useNavigation();
+
   const [lineChart, setLineChart] = useState({
     label: [],
     data: [],
     loading: false,
   });
-  const [pieChart, setPieChart] = useState([]);
-  const [loadingPieChart, setLoadingPieChart] = useState(false);
+  const [profileData, setProfileData] = useState(null);
+  const [totalInvestments, setTotalInvestments] = useState({});
 
   useEffect(() => {
     getLineGraphData();
-    getPieChartData();
+    getProfileData();
+    getTotalInvestments();
   }, []);
   const data = {
     labels: lineChart.label,
     datasets: [
       {
         data: lineChart.data,
-        color: (opacity = 1) => `#09C729`, // optional
-        strokeWidth: 2, // optional
+        color: (opacity = 1) => `#09C729`,
+        strokeWidth: 2,
       },
     ],
-    legend: ["Average Debit"], // optional
-  };
-
-  const mapPieChartData = (obj) => {
-    return Object.entries(obj).map(([key, value], index) => {
-      return {
-        name: key,
-        population: value,
-        color: colors[index],
-        legendFontColor: "#7F7F7F",
-        legendFontSize: 15,
-      };
-    });
+    legend: ["Average balance per month"],
   };
 
   const getLineGraphData = () => {
@@ -62,12 +49,11 @@ export default function Tab() {
     };
 
     axios
-      .post("/debitavg", payload)
+      .post("/eodmonthbalance", payload)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
         const data = {
-          label: response.data.data.month,
-          data: response.data.data.avg_debit_amount,
+          label: response.data.data.months,
+          data: response.data.data.eod_balance_values,
           loading: true,
         };
         setLineChart(data);
@@ -77,32 +63,56 @@ export default function Tab() {
       });
   };
 
-  const getPieChartData = () => {
+  const getProfileData = () => {
     const payload = {
       tracking_id: userData.tracking_id,
       reference_id: userData.refrence_id,
     };
 
     axios
-      .post("/categorywise", payload)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-        const data = mapPieChartData(response.data);
-        setPieChart(data);
-        setLoadingPieChart(true);
+      .post("/profile", payload)
+      .then((response) => {
+        const data = response.data.data;
+        setProfileData(data);
       })
       .catch(function (error) {
         console.log(error);
       });
   };
+
+  const getTotalInvestments = () => {
+    const payload = {
+      tracking_id: userData.tracking_id,
+      reference_id: userData.refrence_id,
+    };
+
+    axios
+      .post("/currentinvestment", payload)
+      .then((response) => {
+        const data = response.data;
+        setTotalInvestments(data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const lineChartCTA = "Create Wealth";
+
   return (
     <Background>
-      <Header>Analytics</Header>
+      <View style={styles.header}>
+        <Text style={styles.greetings}>Hello {profileData?.data[0].name}</Text>
+        <Text>Account Balance: ₹{profileData?.data[0]?.bank_balance}</Text>
+        <Text>Account No: {profileData?.data[0]?.bank_account}</Text>
+      </View>
+      {/* <Header style={styles.subtitle}>Wealth Management</Header> */}
       {lineChart?.loading && (
-        <View style={{ display: "flex", alignItems: "center", marginTop: 30 }}>
-          <Header style={{ colors: "#555555", fontSize: 18 }}>
-            Monthly Spends
-          </Header>
+        <View style={{ display: "flex", alignItems: "center" }}>
+          {/* navigation */}
+          <Button onPress={() => navigation.navigate("Dashboard")}>
+            {lineChartCTA}
+          </Button>
           <LineChart
             data={data}
             width={screenWidth}
@@ -111,8 +121,8 @@ export default function Tab() {
               backgroundColor: "#121212",
               backgroundGradientFrom: "#121212",
               backgroundGradientTo: "#121212",
-              decimalPlaces: 2, // optional, defaults to 2dp
-              color: (opacity = 1) => `rgba(  255, 255, 255, ${opacity})`,
+              decimalPlaces: 0, // optional, defaults to 2dp
+              color: (opacity = 1) => `rgba( 255, 255, 255, ${opacity})`,
               labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
               style: {
                 borderRadius: 16,
@@ -124,39 +134,90 @@ export default function Tab() {
               },
             }}
           />
+          {/* <Header>Line Chart</Header> */}
         </View>
       )}
 
-      {loadingPieChart && (
-        <View style={{ marginTop: 20, display: "flex", alignItems: "center" }}>
-          <Header style={{ colors: "#555555", fontSize: 18 }}>
-            Category Wise Analysis
-          </Header>
-          <PieChart
-            data={pieChart}
-            width={Dimensions.get("window").width - 16}
-            height={220}
-            chartConfig={{
-              backgroundColor: "#1cc910",
-              backgroundGradientFrom: "#eff3ff",
-              backgroundGradientTo: "#efefef",
-              decimalPlaces: 2,
-              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-              style: {
-                borderRadius: 16,
-              },
-            }}
-            style={{
-              marginVertical: 8,
-              borderRadius: 16,
-            }}
-            accessor="population"
-            backgroundColor="transparent"
-            paddingLeft="15"
-            absolute //for the absolut
-          />
-        </View>
-      )}
+      <Investments investments={totalInvestments} />
     </Background>
   );
 }
+
+const styles = StyleSheet.create({
+  viewContainer: {
+    width: "100%",
+    display: "flex",
+    // alignSelf: "center",
+    // alignItems: "center",
+  },
+  container: {
+    width: "100%",
+    display: "flex",
+    alignSelf: "center",
+    alignItems: "center",
+  },
+  textCard: {
+    width: "100%",
+    marginVertical: 6,
+    paddingVertical: 2,
+    margin: 10,
+  },
+  headTitle: {
+    margin: 15,
+    fontSize: 22,
+    marginVertical: 6,
+    paddingVertical: 2,
+  },
+  title: {
+    fontSize: 16,
+    marginVertical: 4,
+    paddingVertical: 2,
+  },
+  text: {
+    fontSize: 16,
+    marginVertical: 3,
+    paddingVertical: 2,
+    textTransform: "capitalize",
+    color: "#cecece",
+  },
+  underline: {
+    height: 2,
+    width: "100%",
+    backgroundColor: "#cecece",
+  },
+  header: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    width: "140%",
+    marginVertical: 8,
+    paddingVertical: 10,
+  },
+  buttonContainer: {
+    margin: 20,
+    width: "100%",
+  },
+  greetings: {
+    fontSize: 22,
+    fontWeight: "600",
+    padding: 5,
+    textTransform: "uppercase",
+  },
+  accountContainer: {
+    fontSize: 18,
+    fontWeight: "600",
+    // position: "absolute",
+    // top: 10,
+    // left: 0,
+  },
+  underline: {
+    marginTop: 6,
+    height: 1,
+    backgroundColor: "#cecece",
+  },
+  subtitle: {
+    paddingVertical: 10,
+    fontSize: 20,
+    fontWeight: "400",
+  },
+});

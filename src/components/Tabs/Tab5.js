@@ -1,67 +1,35 @@
-import { LineChart } from "react-native-chart-kit";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Text } from "react-native-paper";
+import { Dimensions, View, ScrollView, StyleSheet } from "react-native";
 import Background from "../Background";
 import Header from "../Header";
-import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import axios from "../../helpers/axios/axios";
-import Investments from "../Investments";
-import { Text } from "react-native-paper";
+import HeaderBar from "../HeaderBar";
+import Card from "../Card";
+import Paragraph from "../Paragraph";
 import Button from "../Button";
-import { useNavigation } from "@react-navigation/native";
-const screenWidth = Dimensions.get("window").width;
+import { FontAwesome } from "@expo/vector-icons";
+import { useSelector, useDispatch } from "react-redux";
+import { updateAAData } from "../../store/actions/aa";
+import axios from "../../helpers/axios/axios";
+import { useEffect, useState } from "react";
 
-export default function Tab() {
-  const storeData = useSelector((state) => state);
-  const userData = storeData.userData.data;
-  const profile = storeData.profile.data;
-  const navigation = useNavigation();
-
-  const [lineChart, setLineChart] = useState({
-    label: [],
-    data: [],
-    loading: false,
-  });
-  const [profileData, setProfileData] = useState(null);
-  const [totalInvestments, setTotalInvestments] = useState({});
+export default function Tab({ navigation }) {
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.userData.data);
+  // console.log(userData);
+  const [profilData, setProfileData] = useState(null);
+  // const phoneNo = storeData.user.username;
+  // const profilData = useSelector((state) => state.profile.data);
 
   useEffect(() => {
-    getLineGraphData();
     getProfileData();
-    getTotalInvestments();
   }, []);
-  const data = {
-    labels: lineChart.label,
-    datasets: [
-      {
-        data: lineChart.data,
-        color: (opacity = 1) => `#09C729`, // optional
-        strokeWidth: 2, // optional
-      },
-    ],
-    legend: ["Average balance per month"], // optional
-  };
 
-  const getLineGraphData = () => {
-    const payload = {
-      tracking_id: userData.tracking_id,
-      reference_id: userData.refrence_id,
-    };
-
-    axios
-      .post("/eodmonthbalance", payload)
-      .then(function (response) {
-        console.log(response.data);
-        const data = {
-          label: response.data.data.months,
-          data: response.data.data.eod_balance_values,
-          loading: true,
-        };
-        setLineChart(data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  const onSubmit = () => {
+    dispatch(updateAAData({}));
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "SplashScreen" }],
+    });
   };
 
   const getProfileData = () => {
@@ -73,8 +41,7 @@ export default function Tab() {
     axios
       .post("/profile", payload)
       .then((response) => {
-        const data = response.data.data;
-        console.log(response.data.data, "asddd");
+        const data = response.data.data.data[0];
         setProfileData(data);
       })
       .catch(function (error) {
@@ -82,68 +49,77 @@ export default function Tab() {
       });
   };
 
-  const getTotalInvestments = () => {
-    const payload = {
-      tracking_id: userData.tracking_id,
-      reference_id: userData.refrence_id,
-    };
-
-    axios
-      .post("/currentinvestment", payload)
-      .then((response) => {
-        const data = response.data;
-        console.log(response.data, "investmensts");
-        setTotalInvestments(data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
-
-  const lineChartCTA = "Create Wealth";
-
   return (
-    <Background>
-      {/* <Text style={styles.underline}>asdadasdadasdasasdasdasdasdasda</Text> */}
-      <View style={styles.header}>
-        <Text style={styles.greetings}>Hello {profileData?.data[0].name}</Text>
-        <Text>Account Balance: ₹{profileData?.data[0].bank_balance}</Text>
-        <Text>Account No: {profileData?.data[0].bank_account}</Text>
-      </View>
-      {/* <Text style={styles.underline}>asdadasdadasdasasdasdasdasdasda</Text> */}
-      {/* <Header style={styles.subtitle}>Wealth Management</Header> */}
-      {lineChart?.loading && (
-        <View style={{ display: "flex", alignItems: "center" }}>
-          {/* navigation */}
-          <Button onPress={() => navigation.navigate("Dashboard")}>
-            {lineChartCTA}
-          </Button>
-          <LineChart
-            data={data}
-            width={screenWidth}
-            height={220}
-            chartConfig={{
-              backgroundColor: "#121212",
-              backgroundGradientFrom: "#121212",
-              backgroundGradientTo: "#121212",
-              decimalPlaces: 0, // optional, defaults to 2dp
-              color: (opacity = 1) => `rgba( 255, 255, 255, ${opacity})`,
-              labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-              style: {
-                borderRadius: 16,
-              },
-              propsForDots: {
-                r: "6",
-                strokeWidth: "2",
-                stroke: "#ffffff",
-              },
-            }}
-          />
-          {/* <Header>Line Chart</Header> */}
-        </View>
-      )}
+    <Background styles={styles.container}>
+      <ScrollView style={styles.viewContainer}>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <FontAwesome name="user-circle" size={24} color="white" />
+            <Text style={styles.headTitle}>Profile</Text>
+          </View>
+          {profilData?.name && (
+            <>
+              <View style={styles.textCard}>
+                <Text style={styles.title}>Name</Text>
+                <Text style={styles.text}>{profilData?.name}</Text>
+                <Text style={styles.underline}></Text>
+              </View>
+              <View style={styles.textCard}>
+                <Text style={styles.title}>Phone Number</Text>
+                <Text style={styles.text}> {profilData?.mobile}</Text>
+                <Text style={styles.underline}></Text>
+              </View>
+              <View style={styles.textCard}>
+                <Text style={styles.title}>Email</Text>
+                <Text style={{ ...styles.text, textTransform: "lowercase" }}>
+                  {" "}
+                  {profilData?.email}
+                </Text>
+                <Text style={styles.underline}></Text>
+              </View>
+              <View style={styles.textCard}>
+                <Text style={styles.title}>DOB</Text>
+                <Text style={styles.text}> {profilData?.dob}</Text>
+                <Text style={styles.underline}></Text>
+              </View>
+              <View style={styles.textCard}>
+                <Text style={styles.title}>PAN</Text>
+                <Text style={{ ...styles.text, textTransform: "uppercase" }}>
+                  {profilData?.pan}
+                </Text>
+                <Text style={styles.underline}></Text>
+              </View>
 
-      <Investments investments={totalInvestments} />
+              <View style={styles.textCard}>
+                <Text style={styles.title}>Bank Account</Text>
+                <Text style={{ ...styles.text, textTransform: "lowercase" }}>
+                  {profilData?.bank_account}
+                </Text>
+                <Text style={styles.underline}></Text>
+              </View>
+
+              <View style={styles.textCard}>
+                <Text style={styles.title}>Bank Balance</Text>
+                <Text style={{ ...styles.text, textTransform: "lowercase" }}>
+                  {profilData?.bank_balance}
+                </Text>
+                <Text style={styles.underline}></Text>
+              </View>
+
+              <View style={styles.textCard}>
+                <Text style={styles.title}>Address</Text>
+                <Text style={styles.text}> {profilData?.address}</Text>
+                <Text style={styles.underline}></Text>
+              </View>
+            </>
+          )}
+          <View style={styles.buttonContainer}>
+            <Button mode="outlined" onPress={onSubmit}>
+              Logout
+            </Button>
+          </View>
+        </View>
+      </ScrollView>
     </Background>
   );
 }
@@ -186,43 +162,18 @@ const styles = StyleSheet.create({
     color: "#cecece",
   },
   underline: {
-    height: 2,
-    width: "100%",
-    backgroundColor: "#cecece",
-  },
-  header: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    width: "140%",
-    marginVertical: 8,
-    paddingVertical: 10,
-  },
-  buttonContainer: {
-    margin: 20,
-    width: "100%",
-  },
-  greetings: {
-    fontSize: 22,
-    fontWeight: "600",
-    padding: 5,
-    textTransform: "uppercase",
-  },
-  accountContainer: {
-    fontSize: 18,
-    fontWeight: "600",
-    // position: "absolute",
-    // top: 10,
-    // left: 0,
-  },
-  underline: {
     marginTop: 6,
     height: 1,
     backgroundColor: "#cecece",
   },
-  subtitle: {
-    paddingVertical: 10,
-    fontSize: 20,
-    fontWeight: "400",
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+  },
+  buttonContainer: {
+    margin: 20,
+    width: "100%",
   },
 });

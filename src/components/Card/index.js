@@ -1,24 +1,10 @@
-import { StyleSheet, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 import { theme } from "../../core/theme";
 import Button from "../Button";
+import { formatKey } from "../../helpers/formators";
+
 export default function Card({ item, pKey }) {
-  const formatKey = (key) => {
-    if (key.includes("one_year")) {
-      return removeUnderScore(key.replace("one_year", "1Y"));
-    } else if (key.includes("three_year")) {
-      return removeUnderScore(key.replace("three_year", "3Y"));
-    } else if (key.includes("five_year")) {
-      return removeUnderScore(key.replace("five_year", "5Y"));
-    } else {
-      return removeUnderScore(key);
-    }
-  };
-
-  const removeUnderScore = (name) => {
-    return name ? name.replaceAll("_", " ") : "";
-  };
-
   return (
     <View style={styles.container}>
       <View>
@@ -35,13 +21,32 @@ export default function Card({ item, pKey }) {
               </View>
             );
           } else {
-            return <></>;
+            return "";
           }
         })}
-        <Button mode="outlined" onPress={() => alert("Invest Now")}>
-          Invest
-        </Button>
       </View>
+
+      <Button
+        mode="outlined"
+        onPress={() => alert("Invest Now")}
+        // style={styles.btn}
+      >
+        <View style={styles.customeButton}>
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: "600",
+              textTransform: "uppercase",
+            }}
+          >
+            Invest With
+          </Text>
+          <Image
+            source={require("../../assets/bob.webp")}
+            style={{ height: 30, width: 30, marginLeft: 10 }}
+          />
+        </View>
+      </Button>
     </View>
   );
 }
@@ -54,6 +59,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 7,
     width: 250,
+    justifyContent: "space-evenly",
   },
   title: {
     fontSize: 16,
@@ -79,5 +85,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "flex-start",
     paddingVertical: 3,
+  },
+  customeButton: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
   },
 });

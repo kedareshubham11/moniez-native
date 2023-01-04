@@ -26,7 +26,7 @@ export default function App() {
             <Stack.Navigator
               initialRouteName="SplashScreen"
               screenOptions={{
-                // headerShown: true,
+                headerShown: true,
                 title: "Moniez",
                 headerStyle: {
                   backgroundColor: "#02BB92",

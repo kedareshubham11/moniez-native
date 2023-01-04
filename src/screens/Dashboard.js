@@ -32,14 +32,14 @@ export default function Dashboard({ navigation }) {
   ]);
 
   const ProfileTab = () => {
-    return <Tab4 navigation={navigation} />;
+    return <Tab5 navigation={navigation} />;
   };
 
   const renderScene = BottomNavigation.SceneMap({
-    home: Tab5,
-    category: Tab2,
-    analytics: Tab1,
-    all: Tab3,
+    home: Tab1,
+    analytics: Tab2,
+    category: Tab3,
+    all: Tab4,
     profile: ProfileTab,
   });
 

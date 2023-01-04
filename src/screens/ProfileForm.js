@@ -16,12 +16,10 @@ import { theme } from "../core/theme";
 export default function ProfileForm({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  console.log(state);
   const [name, setName] = useState({ value: "", error: "" });
   const [email, setEmail] = useState({ value: "", error: "" });
   const [riskAppetite, setRiskAppetite] = useState({ value: 0.33, error: "" });
   const [showDropDown, setShowDropDown] = useState(false);
-  // console.log(riskAppetite);
 
   const riskList = [
     {

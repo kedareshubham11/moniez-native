@@ -27,7 +27,6 @@ export default function ProfileForm({ navigation }) {
     axios
       .post("/initiate-consent", payload)
       .then(function (response) {
-        console.log(response.data);
         dispatch(updateAAData(response.data));
         // setConsentUrl(response.data.redirection_url);
         // setVisible(true);

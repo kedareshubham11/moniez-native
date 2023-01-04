@@ -69,9 +69,10 @@ export default function ProfileForm({ navigation }) {
     <Background>
       {/* <BackButton goBack={navigation.goBack} /> */}
       <View style={styles.header}>
-        <Header>Welcome to Moniez</Header>
         <Logo />
-        <Text>Please fill in your details</Text>
+        <Header>Welcome to Moniez</Header>
+
+        {/* <Text>Please fill in your details</Text>@k */}
       </View>
 
       <TextInput
@@ -89,7 +90,7 @@ export default function ProfileForm({ navigation }) {
       />
 
       <TextInput
-        label="email"
+        label="Email"
         returnKeyType="next"
         value={email.value}
         onChangeText={(text) => {
@@ -146,6 +147,7 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 1,
     backgroundColor: theme.colors.surface,
+    marginTop: 15,
   },
   safeContainerStyle: {
     height: 20,

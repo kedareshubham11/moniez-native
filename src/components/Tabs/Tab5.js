@@ -7,12 +7,16 @@ import { useEffect, useState } from "react";
 import axios from "../../helpers/axios/axios";
 import Investments from "../Investments";
 import { Text } from "react-native-paper";
+import Button from "../Button";
+import { useNavigation } from "@react-navigation/native";
 const screenWidth = Dimensions.get("window").width;
 
 export default function Tab() {
   const storeData = useSelector((state) => state);
   const userData = storeData.userData.data;
   const profile = storeData.profile.data;
+  const navigation = useNavigation();
+
   const [lineChart, setLineChart] = useState({
     label: [],
     data: [],
@@ -49,7 +53,7 @@ export default function Tab() {
       .then(function (response) {
         console.log(response.data);
         const data = {
-          label: response.data.data.month,
+          label: response.data.data.months,
           data: response.data.data.eod_balance_values,
           loading: true,
         };
@@ -96,18 +100,24 @@ export default function Tab() {
       });
   };
 
+  const lineChartCTA = "Create Wealth";
+
   return (
     <Background>
-      <Text style={styles.underline}>asdadasdadasdasasdasdasdasdasda</Text>
+      {/* <Text style={styles.underline}>asdadasdadasdasasdasdasdasdasda</Text> */}
       <View style={styles.header}>
-        <Text style={styles.greetings}>Hi, {profileData?.data[0].name}</Text>
-        <Text>Account Balance: ₹{profileData?.balance}</Text>
-        <Text>Account No: {profileData?.bank_account}</Text>
+        <Text style={styles.greetings}>Hello {profileData?.data[0].name}</Text>
+        <Text>Account Balance: ₹{profileData?.data[0].bank_balance}</Text>
+        <Text>Account No: {profileData?.data[0].bank_account}</Text>
       </View>
-      <Text style={styles.underline}>asdadasdadasdasasdasdasdasdasda</Text>
-      <Header style={styles.subtitle}>Wealth Management</Header>
+      {/* <Text style={styles.underline}>asdadasdadasdasasdasdasdasdasda</Text> */}
+      {/* <Header style={styles.subtitle}>Wealth Management</Header> */}
       {lineChart?.loading && (
         <View style={{ display: "flex", alignItems: "center" }}>
+          {/* navigation */}
+          <Button onPress={() => navigation.navigate("Dashboard")}>
+            {lineChartCTA}
+          </Button>
           <LineChart
             data={data}
             width={screenWidth}
@@ -196,6 +206,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "600",
     padding: 5,
+    textTransform: "uppercase",
   },
   accountContainer: {
     fontSize: 18,

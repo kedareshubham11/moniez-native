@@ -71,7 +71,10 @@ export default function Tab({ navigation }) {
               </View>
               <View style={styles.textCard}>
                 <Text style={styles.title}>Email</Text>
-                <Text style={styles.text}> {profilData?.email}</Text>
+                <Text style={{ ...styles.text, textTransform: "lowercase" }}>
+                  {" "}
+                  {profilData?.email}
+                </Text>
                 <Text style={styles.underline}></Text>
               </View>
               <View style={styles.textCard}>
@@ -83,6 +86,22 @@ export default function Tab({ navigation }) {
                 <Text style={styles.title}>PAN</Text>
                 <Text style={{ ...styles.text, textTransform: "uppercase" }}>
                   {profilData?.pan}
+                </Text>
+                <Text style={styles.underline}></Text>
+              </View>
+
+              <View style={styles.textCard}>
+                <Text style={styles.title}>Bank Account</Text>
+                <Text style={{ ...styles.text, textTransform: "lowercase" }}>
+                  {profilData?.bank_account}
+                </Text>
+                <Text style={styles.underline}></Text>
+              </View>
+
+              <View style={styles.textCard}>
+                <Text style={styles.title}>Bank Balance</Text>
+                <Text style={{ ...styles.text, textTransform: "lowercase" }}>
+                  {profilData?.bank_balance}
                 </Text>
                 <Text style={styles.underline}></Text>
               </View>

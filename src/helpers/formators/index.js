@@ -1,5 +1,5 @@
 export const removeUnderScore = (name) => {
-  return name ? name.replaceAll("_", " ") : "";
+  return name !== undefined ? name.replaceAll("_", " ") : "";
 };
 
 export const formatKey = (key) => {

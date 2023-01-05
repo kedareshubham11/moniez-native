@@ -6,8 +6,8 @@ import { AntDesign } from "@expo/vector-icons";
 import { theme } from "../core/theme";
 
 export default function CustomModal({
-  title,
-  modalVisible,
+  title = "",
+  modalVisible = false,
   toggleModal,
   component,
   ...props

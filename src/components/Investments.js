@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 import { Text } from "react-native-paper";
 import { theme } from "../core/theme";
 import { Entypo } from "@expo/vector-icons";
@@ -12,28 +12,50 @@ export default function Investments({ investments }) {
       <View style={styles.header}>
         <Text style={styles.title}>My Investments</Text>
         <Text style={styles.price}>
-          Total Value ₹{investments?.total_sum || 0}
+          {investments?.total_sum != 0
+            ? `Total Value ₹${investments?.total_sum || 0}`
+            : "Looks like you dont have any investments"}
         </Text>
       </View>
       <ScrollView horizontal={true}>
         <View style={styles.cardContainer}>
           <View style={styles.cards}>
-            <Entypo name="bar-graph" size={24} color="green" />
+            <Image
+              name="bar-graph"
+              style={styles.image}
+              size={24}
+              source={require("../assets/mf.png")}
+            />
             <Text style={styles.text}>Mutual Funds</Text>
             <Text style={styles.price}>₹{investments?.mutual_fund || 0}</Text>
           </View>
           <View style={styles.cards}>
-            <Entypo name="bar-graph" size={24} color="green" />
+            <Image
+              name="bar-graph"
+              style={styles.image}
+              size={24}
+              source={require("../assets/stocks.png")}
+            />
             <Text style={styles.text}>Stocks</Text>
             <Text style={styles.price}>₹{investments?.Stocks || 0}</Text>
           </View>
           <View style={styles.cards}>
-            <Entypo name="bar-graph" size={24} color="green" />
+            <Image
+              name="bar-graph"
+              style={styles.image}
+              size={24}
+              source={require("../assets/bitcon.png")}
+            />
             <Text style={styles.text}>Crypto</Text>
             <Text style={styles.price}>₹{investments?.crypto || 0}</Text>
           </View>
           <View style={styles.cards}>
-            <Entypo name="bar-graph" size={24} color="green" />
+            <Image
+              style={styles.image}
+              name="bar-graph"
+              size={24}
+              source={require("../assets/com.png")}
+            />
             <Text style={styles.text}>Commodities</Text>
             <Text style={styles.price}>₹{investments?.Commodities || 0}</Text>
           </View>
@@ -87,5 +109,9 @@ const styles = StyleSheet.create({
   },
   price: {
     fontWeight: "800",
+  },
+  image: {
+    height: 40,
+    width: 40,
   },
 });

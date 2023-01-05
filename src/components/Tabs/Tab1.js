@@ -39,7 +39,7 @@ export default function Tab() {
         strokeWidth: 2,
       },
     ],
-    legend: ["Average balance per month"],
+    legend: ["EOD balance per month"],
   };
 
   const getLineGraphData = () => {

@@ -9,11 +9,12 @@ import axios from "../../helpers/axios/axios";
 const screenWidth = Dimensions.get("window").width;
 
 const colors = [
-  "#008631",
-  "#00ab41",
-  "#00c04b",
-  "#1fd655",
-  "#39e75f",
+  "#6ECCAF",
+  "#ffffff",
+  "#68B984",
+  "#256D85",
+  "#FDFDBD",
+  "#295939",
   "#5ced73",
 ];
 

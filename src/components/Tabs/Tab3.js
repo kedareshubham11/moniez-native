@@ -1,4 +1,11 @@
-import { Dimensions, View, ScrollView, StyleSheet } from "react-native";
+import {
+  Dimensions,
+  View,
+  ScrollView,
+  StyleSheet,
+  Image,
+  Linking,
+} from "react-native";
 import Background from "../Background";
 import Header from "../Header";
 import Card from "../Card";
@@ -42,20 +49,66 @@ export default function Tab() {
         console.log(error);
       });
   };
+  const openUrlInBrowser = async (url) => {
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+      // by some browser in the mobile
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${url}`);
+    }
+  };
 
   const onPressTrade = () => {
-    alert("trade");
+    openUrlInBrowser(
+      "https://play.google.com/store/apps/details?id=com.intellectsoftwares.bobitrade&hl=en_IN&gl=US"
+    );
   };
 
   const onPressCreate = () => {
-    alert("Create");
+    openUrlInBrowser("https://ekyc.barodaetrade.com");
   };
 
-  const ModalCoponent = () => {
+  const ModalComponent = () => {
     return (
       <View>
-        <Button onPress={onPressTrade}> Trade </Button>
-        <Button onPress={onPressCreate}> Create</Button>
+        <Button mode="outlined" onPress={onPressCreate}>
+          <View style={styles.customeButton}>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "600",
+                textTransform: "uppercase",
+              }}
+            >
+              Open Demat
+            </Text>
+            <Image
+              source={require("../../assets/bob.webp")}
+              style={{ height: 30, width: 30, marginLeft: 10 }}
+            />
+          </View>
+        </Button>
+
+        <Button mode="outlined" onPress={onPressTrade}>
+          <View style={styles.customeButton}>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "600",
+                textTransform: "uppercase",
+              }}
+            >
+              Invest With
+            </Text>
+            <Image
+              source={require("../../assets/bob.webp")}
+              style={{ height: 30, width: 30, marginLeft: 10 }}
+            />
+          </View>
+        </Button>
       </View>
     );
   };
@@ -90,10 +143,10 @@ export default function Tab() {
         </View>
 
         <Modal
-          title={"Invest With BOB"}
+          title={""}
           toggleModal={setModalVisible}
           modalVisible={modalVisible}
-          component={<ModalCoponent />}
+          component={<ModalComponent />}
         />
       </Background>
     </ScrollView>
@@ -151,5 +204,11 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+  },
+  customeButton: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
   },
 });

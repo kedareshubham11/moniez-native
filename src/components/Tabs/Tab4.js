@@ -20,6 +20,7 @@ import { theme } from "../../core/theme";
 import CustomModal from "../Modal";
 import RowCard from "../Card/RowCard";
 
+import Loader from "../Loader";
 export default function Tab() {
   const storeData = useSelector((state) => state);
   const userData = storeData.userData.data;
@@ -161,7 +162,7 @@ export default function Tab() {
         </Tab.Navigator>
       ) : (
         <Background>
-          <Header>Explore</Header>
+          <Loader />
         </Background>
       )}
       <CustomModal

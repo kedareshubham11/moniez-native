@@ -27,21 +27,19 @@ export default function Card({ item, pKey, openModal }) {
       </View>
 
       <Button mode="outlined" onPress={() => openModal()}>
-        <View style={styles.customeButton}>
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: "600",
-              textTransform: "uppercase",
-            }}
-          >
-            Invest With
-          </Text>
-          <Image
-            source={require("../../assets/bob.webp")}
-            style={{ height: 30, width: 30, marginLeft: 10 }}
-          />
-        </View>
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: "600",
+            textTransform: "uppercase",
+          }}
+        >
+          Invest With
+        </Text>
+        <Image
+          source={require("../../assets/bob.webp")}
+          style={{ height: 30, width: 30, marginLeft: 10 }}
+        />
       </Button>
     </View>
   );

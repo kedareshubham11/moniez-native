@@ -16,6 +16,7 @@ import Title from "../Title";
 import { Text } from "react-native-paper";
 import Button from "../Button";
 import Modal from "../Modal";
+import Loader from "../Loader";
 
 export default function Tab() {
   const storeData = useSelector((state) => state);
@@ -75,39 +76,19 @@ export default function Tab() {
     return (
       <View>
         <Button mode="outlined" onPress={onPressCreate}>
-          <View style={styles.customeButton}>
-            <Text
-              style={{
-                fontSize: 20,
-                fontWeight: "600",
-                textTransform: "uppercase",
-              }}
-            >
-              Open Demat
-            </Text>
-            <Image
-              source={require("../../assets/bob.webp")}
-              style={{ height: 30, width: 30, marginLeft: 10 }}
-            />
-          </View>
+          <Text style={styles.modalBtnText}>Open Demat</Text>
+          <Image
+            source={require("../../assets/bob.webp")}
+            style={styles.modalBtnImg}
+          />
         </Button>
 
         <Button mode="outlined" onPress={onPressTrade}>
-          <View style={styles.customeButton}>
-            <Text
-              style={{
-                fontSize: 20,
-                fontWeight: "600",
-                textTransform: "uppercase",
-              }}
-            >
-              Invest With
-            </Text>
-            <Image
-              source={require("../../assets/bob.webp")}
-              style={{ height: 30, width: 30, marginLeft: 10 }}
-            />
-          </View>
+          <Text style={styles.modalBtnText}>Invest With</Text>
+          <Image
+            source={require("../../assets/bob.webp")}
+            style={styles.modalBtnImg}
+          />
         </Button>
       </View>
     );
@@ -119,7 +100,7 @@ export default function Tab() {
         <View style={styles.container}>
           <Header>Recommendations For You</Header>
           <View style={styles.recommendations}>
-            {!recommendations.loader &&
+            {!recommendations.loader ? (
               Object.entries(recommendations.data).map(
                 ([key, value], pIndex) => {
                   return (
@@ -138,7 +119,10 @@ export default function Tab() {
                     </View>
                   );
                 }
-              )}
+              )
+            ) : (
+              <Loader />
+            )}
           </View>
         </View>
 
@@ -205,10 +189,17 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center",
   },
-  customeButton: {
+  customButton: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
   },
+  modalBtnText: {
+    color: "#ffffff",
+    fontSize: 20,
+    fontWeight: "600",
+    textTransform: "uppercase",
+  },
+  modalBtnImg: { height: 30, width: 30, marginLeft: 10 },
 });

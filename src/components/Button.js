@@ -11,7 +11,7 @@ export default function Button({ mode, style, ...props }) {
         mode === "outlined" && {
           backgroundColor: theme.colors.surface,
           borderColor: theme.colors.secondary,
-          borderWidth: "1px",
+          borderWidth: 1,
         },
         style,
       ]}

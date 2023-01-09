@@ -6,6 +6,7 @@ import Header from "../Header";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from "../../helpers/axios/axios";
+import Loader from "../Loader";
 const screenWidth = Dimensions.get("window").width;
 
 const colors = [
@@ -97,7 +98,7 @@ export default function Tab() {
   return (
     <Background>
       <Header>Analytics</Header>
-      {!lineChart?.loader && (
+      {!lineChart?.loader ? (
         <View style={{ display: "flex", alignItems: "center", marginTop: 30 }}>
           <Header style={{ colors: "#555555", fontSize: 18 }}>
             Monthly Spends
@@ -124,9 +125,11 @@ export default function Tab() {
             }}
           />
         </View>
+      ) : (
+        <Loader />
       )}
 
-      {loadingPieChart && (
+      {loadingPieChart ? (
         <View style={{ marginTop: 20, display: "flex", alignItems: "center" }}>
           <Header style={{ colors: "#555555", fontSize: 18 }}>
             Category Wise Analysis
@@ -155,6 +158,8 @@ export default function Tab() {
             absolute //for the absolut
           />
         </View>
+      ) : (
+        <Loader />
       )}
     </Background>
   );

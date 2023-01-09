@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateAAData } from "../../store/actions/aa";
 import axios from "../../helpers/axios/axios";
 import { useEffect, useState } from "react";
+import Loader from "../Loader";
 
 export default function Tab({ navigation }) {
   const dispatch = useDispatch();
@@ -50,14 +51,14 @@ export default function Tab({ navigation }) {
   };
 
   return (
-    <Background styles={styles.container}>
+    <Background>
       <ScrollView style={styles.viewContainer}>
         <View style={styles.container}>
           <View style={styles.header}>
             <FontAwesome name="user-circle" size={24} color="white" />
             <Text style={styles.headTitle}>Profile</Text>
           </View>
-          {profilData?.name && (
+          {profilData?.name ? (
             <>
               <View style={styles.textCard}>
                 <Text style={styles.title}>Name</Text>
@@ -112,12 +113,17 @@ export default function Tab({ navigation }) {
                 <Text style={styles.underline}></Text>
               </View>
             </>
+          ) : (
+            <Loader />
           )}
-          <View style={styles.buttonContainer}>
-            <Button mode="outlined" onPress={onSubmit}>
-              Logout
-            </Button>
-          </View>
+
+          {profilData?.name && (
+            <View style={styles.buttonContainer}>
+              <Button mode="outlined" onPress={onSubmit}>
+                Logout
+              </Button>
+            </View>
+          )}
         </View>
       </ScrollView>
     </Background>

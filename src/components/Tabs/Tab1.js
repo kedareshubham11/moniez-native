@@ -1,7 +1,6 @@
 import { LineChart } from "react-native-chart-kit";
 import { Dimensions, StyleSheet, View } from "react-native";
 import Background from "../Background";
-import Header from "../Header";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from "../../helpers/axios/axios";
@@ -9,6 +8,7 @@ import Investments from "../Investments";
 import { Text } from "react-native-paper";
 import Button from "../Button";
 import { useNavigation } from "@react-navigation/native";
+import Loader from "../Loader";
 const screenWidth = Dimensions.get("window").width;
 
 export default function Tab() {
@@ -23,7 +23,10 @@ export default function Tab() {
     loading: false,
   });
   const [profileData, setProfileData] = useState(null);
-  const [totalInvestments, setTotalInvestments] = useState({});
+  const [totalInvestments, setTotalInvestments] = useState({
+    data: {},
+    loader: true,
+  });
 
   useEffect(() => {
     getLineGraphData();
@@ -90,7 +93,7 @@ export default function Tab() {
       .post("/currentinvestment", payload)
       .then((response) => {
         const data = response.data;
-        setTotalInvestments(data);
+        setTotalInvestments({ data: data, loader: false });
       })
       .catch(function (error) {
         console.log(error);
@@ -101,13 +104,23 @@ export default function Tab() {
 
   return (
     <Background>
-      <View style={styles.header}>
-        <Text style={styles.greetings}>Hello {profileData?.data[0].name}</Text>
-        <Text>Account Balance: ₹{profileData?.data[0]?.bank_balance}</Text>
-        <Text>Account No: {profileData?.data[0]?.bank_account}</Text>
-      </View>
-      {/* <Header style={styles.subtitle}>Wealth Management</Header> */}
-      {lineChart?.loading && (
+      {!profileData?.data[0] && (
+        <Button onPress={() => navigation.navigate("Dashboard")}>
+          {lineChartCTA}
+        </Button>
+      )}
+      {profileData?.data[0] ? (
+        <View style={styles.header}>
+          <Text style={styles.greetings}>
+            Hello {profileData?.data[0].name}
+          </Text>
+          <Text>Account Balance: ₹{profileData?.data[0]?.bank_balance}</Text>
+          <Text>Account No: {profileData?.data[0]?.bank_account}</Text>
+        </View>
+      ) : (
+        <Loader />
+      )}
+      {lineChart?.loading ? (
         <View style={{ display: "flex", alignItems: "center" }}>
           {/* navigation */}
           <Button onPress={() => navigation.navigate("Dashboard")}>
@@ -136,9 +149,15 @@ export default function Tab() {
           />
           {/* <Header>Line Chart</Header> */}
         </View>
+      ) : (
+        <Loader />
       )}
 
-      <Investments investments={totalInvestments} />
+      {!totalInvestments.loader ? (
+        <Investments investments={totalInvestments.data} />
+      ) : (
+        <Loader />
+      )}
     </Background>
   );
 }

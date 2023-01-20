@@ -104,7 +104,7 @@ export default function Tab() {
 
   return (
     <Background>
-      {!profileData?.data[0] && (
+      {!lineChart?.loading && (
         <Button onPress={() => navigation.navigate("Dashboard")}>
           {lineChartCTA}
         </Button>
